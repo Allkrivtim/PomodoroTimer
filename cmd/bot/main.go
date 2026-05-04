@@ -1,19 +1,36 @@
 package main
 
 import (
+	"log"
 	"os"
+	"pomodoroBot/internal/handler/commands"
 
 	tb "github.com/go-telegram-bot-api/telegram-bot-api/v5"
-	dotenv "github.com/joho/godotenv"
 )
 
 func main() {
-	err := dotenv.Load()
-	if err != nil {
-		panic("Error loading .env file")
+	botToken := os.Getenv("TOKEN")
+	if botToken == "" {
+		panic("TOKEN environment variable not set")
 	}
-
-	bot, _ := tb.NewBotAPI(os.Getenv("TOKEN"))
-
+	bot, _ := tb.NewBotAPI(botToken)
 	bot.Debug = true
+
+	log.Printf("Authorized on bot @%s", bot.Self.UserName)
+
+	updateConfig := tb.NewUpdate(0)
+	updateConfig.Timeout = 30
+	updates := bot.GetUpdatesChan(updateConfig)
+
+	for update := range updates {
+		if update.Message.IsCommand() {
+			switch update.Message.Text {
+			case "/start":
+				go commands.StartCommand(&update, bot)
+			case "/help":
+				commands.HelpCommand(&update, bot)
+			}
+
+		}
+	}
 }
