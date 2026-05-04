@@ -10,11 +10,14 @@ import (
 
 func CheckTimers(ctx context.Context, usrid string, rdb redis.UniversalClient) (string, error) {
 	if usrid == "" {
-		return "", errors.New("No user id")
+		return "", errors.New("no user id")
 	}
 	res, err := rdb.Get(ctx, usrid).Result()
+	if errors.Is(err, redis.Nil) {
+		return "", nil // таймера нет — это не ошибка
+	}
 	if err != nil {
-		return "ERROR", err
+		return "", err
 	}
 	return res, nil
 }

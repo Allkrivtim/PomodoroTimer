@@ -16,7 +16,7 @@ func DeleteCommand(update *tb.Update, bot *tb.BotAPI, rdb redis.UniversalClient)
 	log.Printf("[%s] %s", update.Message.From.UserName, update.Message.Text)
 
 	check_timer, err := utils.CheckTimers(ctx, update.Message.From.UserName, rdb)
-	if check_timer != "" || err != nil {
+	if check_timer == "" || err != nil {
 		if err != nil {
 			return err
 		}

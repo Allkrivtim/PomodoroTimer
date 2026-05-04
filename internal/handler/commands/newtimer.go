@@ -35,6 +35,8 @@ func NewtimerCommand(update *tb.Update, bot *tb.BotAPI, rdb redis.UniversalClien
 		}
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
+		msg := tb.NewMessage(update.Message.Chat.ID, "Таймер поставлен. Работаем!")
+		bot.Send(msg)
 
 		for key := range updates.GetRedisUpdate(ctx, rdb) {
 			if update.Message.From.UserName == key {
@@ -42,8 +44,6 @@ func NewtimerCommand(update *tb.Update, bot *tb.BotAPI, rdb redis.UniversalClien
 				bot.Send(msg)
 			}
 		}
-		msg := tb.NewMessage(update.Message.Chat.ID, "Таймер поставлен. Работаем!")
-		bot.Send(msg)
 	}
 	return nil
 }

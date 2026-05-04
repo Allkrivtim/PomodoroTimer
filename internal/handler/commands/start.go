@@ -6,7 +6,7 @@ import (
 	tb "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
-const startMessage = `Здесь будет главная`
+const startMessage = `Бот для продуктивной работы. Комманды: /help`
 
 func StartCommand(update *tb.Update, bot *tb.BotAPI) {
 	log.Printf("[%s] %s", update.Message.From.UserName, update.Message.Text)

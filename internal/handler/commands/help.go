@@ -6,7 +6,9 @@ import (
 	tb "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
-const helpMessage = `Здесь будет помощь`
+const helpMessage = `Главное меню - /start
+Новый таймер - /newtimer
+Удалить таймер - /deltimer`
 
 func HelpCommand(update *tb.Update, bot *tb.BotAPI) {
 	log.Printf("[%s] %s", update.Message.From.UserName, update.Message.Text)
